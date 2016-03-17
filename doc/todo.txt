@@ -1,0 +1,14 @@
+
+
+1) document analysis of buildHeap
+http://interactivepython.org/runestone/static/pythonds/index.html
+
+2) implement tree node creation from array of FULL Binary Tree
+
+3) convert to a MAX heap from a MIN heap via function objects for comparisons
+
+4) ALGOS TODO:
+- Depth First/Breadth First tree search
+- DYNAMIC Fibonacci loop vs recursive analysis; and application to maze problem
+- Djikstra's shortest path algo
+- PROBABILISTIC Bloom Filter

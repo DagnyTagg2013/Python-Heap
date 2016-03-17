@@ -1,0 +1,90 @@
+GRAPHICS:
+
+http://www.dgp.toronto.edu/people/JamesStewart/378notes/07heaps/
+
+http://interactivepython.org/runestone/static/pythonds/index.html
+
+0) APPLICATIONS/MOTIVATION
+
+- CACHE 100 cheapest items seen; as pricing STREAM comes in on 1 MILLION items
+(PRIORITY QUEUE of capacity 100; MIN-HEAP by PRICE)
+
+- SORT 1 MILLION items FAST, and with MINIMUM storage (same storage to store items to be sorted)
+
+1) Big Oh Cheatsheet
+http://bigocheatsheet.com/
+
+* significant divergence of N2 vs NlogN at N = 20 items
+
+DO BETTER than caching with a SORTED LIST:
+- Insert O(N) for N items is:  O(Nexp2)
+even though removing MIN is O(1)
+
+BETTER than caching with BST:
+- does NOT degenerate to worst-case O(N) on insert/evict
+- instead, is 2logN
+
+BETTER than BATCH-sorting that with BST
+- since build time is O(N) instead of O(Nexp2) worst-case
+
+* ISSUE:
+- sort is DESTRUCTIVE, and leaves you with an EMPTY DS
+
+2) Binary (Min) Heap Property:
+
+* each node in tree is SMALLER than BOTH of its children on the LOWER LEVEL
+* relationship is BETWEEN LEVELs of TREE only
+
+STORAGE:
+
+- COMPLETE binary tree, each node has BOTH children EXCEPT for LAST LEAF
+
+each LEVEL has NUMBER of nodes = 2expH
+H=0 at root
+total nodes N = 1 + 2 + 4 + ... + 2exp(H-1) = 2exp(H+1) - 1
+solving for H = O(log N)
+
+Can leverage SEQUENTIAL ARRAY storage:
+- parent @ index P
+- left child @ 2P
+- right child @ 2P + 1
+- child node @ position N
+- parent @ N/2
+
+3) BASIC OPERATIONS
+
+INSERT: O(logN)
+- add to end;
+then percolate/swap UP with parent until Heap property restored
+
+DELETE: O(logN)
+- remove MIN from root; take LAST LEAF and puts at ROOT;
+then percolate/swap DOWN with MIN child until Heap property restored
+
+SORT: O(NlogN)
+- build heap:  O(N)operate_on_root
+- delete min:  O(logN)
+
+4) ANALYSIS of BuildHeap: O(n)
+
+http://www.dgp.toronto.edu/people/JamesStewart/378notes/08buildheap/
+
+Heapify (restore Heap Property):  O(logN)
+Items:  N
+Rough Estimate:  NlogN
+
+TRICK:  Heapify takes time proportional to height of node H
+        Where H=0 at LEAF level
+MAX NUM NODES at height H is:  (N + 1)/2exp(H+1)
+COST to PERCOLATE each node at height H is at most:  (H=1)
+SUMMATION over EACH levels from H=0(LEAF) to H=logN(ROOT)
+          TAKE (num nodes at H) x (cost to percolate at H)
+=> 2(N+1)
+
+QED BuildHeap is O(N)!
+
+*** 50% of tree nodes are at LEAF level; so it's necessary for algo to be EFFICIENT there!
+
+
+
+

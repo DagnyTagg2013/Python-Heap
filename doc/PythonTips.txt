@@ -1,0 +1,219 @@
+
+
+0) Interactive Python -- Binary Heap implementation
+- http://interactivepython.org/runestone/static/pythonds/Trees/BinaryHeapImplementation.html
+
+1) PRIVATE, PROTECTED, PUBLIC:  Differences between __myFunction_ and _myVariable
+- http://stackoverflow.com/questions/1301346/the-meaning-of-a-single-and-a-double-underscore-before-an-object-name-in-python
+
+1a) _single_leading_underscore:
+- WEAK "internal use" indicator. E.g. from M import * does not import objects whose name starts with an underscore.
+
+1b) __double leading underscore and one trailing underscore:
+Any identifier of the form __spam (at least two leading underscores, at most one trailing underscore) is textually replaced with _classname__spam,
+where classname is the current class name with leading underscore(s) stripped.
+This mangling is done without regard to the syntactic position of the identifier, so it can be used to define class-private instance and class variables,
+methods, variables stored in globals, and even variables stored in instances. private to this class on instances of other classes.
+
+1c) MORE ON CONVENTIONS:
+http://stackoverflow.com/questions/797771/python-protected-attributes
+
+2) 'self' in Python (similar to this in Javacript, where function's data context SHIFTs for WHO calls it!):
+- http://stackoverflow.com/questions/2709821/what-is-the-purpose-of-self-in-python
+
+- function template is BOUND to an object data context with whatever object you pass in as SELF
+
+- Python does not use the @ syntax to refer to instance attributes.
+Python decided to do methods in a way that makes the instance to which the method belongs be passed automatically,
+but not received automatically: the first parameter of methods is the instance the method is called on.
+- That makes methods entirely the same as functions, and leaves the actual name to use up to you
+(although self is the convention, and people will generally frown at you when you use something else.)
+self is not special to the code, it's just another object.
+
+3) Arrays vs Lists in Python
+- http://stackoverflow.com/questions/176011/python-list-vs-array-when-to-use
+
+Basically, Python lists are very flexible and can hold completely heterogeneous, arbitrary data, and they can be appended to very efficiently,
+in amortized constant time. If you need to shrink and grow your array time-efficiently and without hassle, they are the way to go.
+But they use a lot more space than C arrays.
+
+The array.array type, on the other hand, is just a thin wrapper on C arrays. It can hold only homogeneous data, all of the same type,
+and so it uses only sizeof(one object) * length bytes of memory. Mostly, you should use it when you need to expose a C array to an extension or a system call
+(for example, ioctl or fctnl). It's also a good way to represent a mutable string (array('B', bytes)) until that actually becomes available in Python 3.0.
+
+However, if you want to do math on a homogeneous array of numeric data, then you're much better off using NumPy, which can automatically vectorize operations
+on complex multi-dimensional arrays.
+
+4) Lists vs Tuples in Python
+- http://stackoverflow.com/questions/626759/whats-the-difference-between-list-and-tuples
+
+So, instead of [1,2] which is a list and which can be mutated,
+(1,2) is a tuple and cannot.
+
+A one-element tuple cannot be instantiated by writing (1), instead, you need to write (1,).
+This is because the interpreter has various other uses for parentheses.
+
+You can also do away with parentheses altogether: 1,2 is the same as (1,2)
+
+Apart from tuples being immutable there is also a semantic distinction that should guide their usage.
+Tuples are heterogeneous data structures (i.e., their entries have different meanings), while lists are homogeneous sequences.
+Tuples have structure, lists have order.
+
+Tuples are also conveniently used as a way to return multiple results from a function
+
+5) Including dependencies in Python
+- http://stackoverflow.com/questions/714881/how-to-include-external-python-code-to-use-in-other-files
+
+a) import Math
+This will allow you to use Math's functions, but you must do Math.Calculate, so that is obviously what you don't want.
+
+b) If you want to import a module's functions without having to prefix them, you must explicitly name them, like:
+
+from Math import Calculate, Add, Subtract
+Now, you can reference Calculate, Add, and Subtract just by their names.
+
+c) If you wanted to import ALL functions from Math, do:
+from Math import *
+
+*** HOWEVER, you should be very careful when doing this with modules whose contents you are unsure of.
+If you import two modules who contain definitions for the same function name, one function will overwrite the other, with you none the wiser!
+
+7) Importing Dependencies from a different folder in Python and what __init__.py is used for
+- http://stackoverflow.com/questions/4383571/importing-files-from-different-folder-in-python
+
+from application.app.folder.file import func_name
+
+Just make sure folder also contains an __init__.py, this allows it to be included as a package.
+
+8) Structuring Python Projects/Environments
+
+EZ:
+
+a) create directory with <Package Directory Name>
+- create dummy EMPTY __init__.py file to recognize folder directory as a Package
+- create <Class Name>.py
+
+b) create main.py in ROOT of project directory
+- put this line at top of that file:
+from <Package Directory Name> import <Class Name>
+- each subdirectory needs its own __init__.py; and then when referencing, uses dot-separator:
+
+
+TOTAL ENV SETUP!
+
+*** ATTENTION to item below!
+- http://learnpythonthehardway.org/book/ex46.html
+- https://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
+
+PACKAGES
+
+- http://intermediate-and-advanced-software-carpentry.readthedocs.org/en/latest/structuring-python.html
+
+MODULES
+
+- Since the name of the main module is always "__main__",
+modules intended for use as the main module of a Python application
+should always use absolute imports.
+- http://stackoverflow.com/questions/4142151/python-how-to-import-the-class-within-the-same-directory-or-sub-directory
+- https://docs.python.org/2/tutorial/modules.html
+
+9) Structuring Python Projects within Pycharm
+- http://stackoverflow.com/questions/21236824/unresolved-reference-issue-in-pycharm
+
+10) The main entrypoint in Python
+- http://stackoverflow.com/questions/419163/what-does-if-name-main-do
+
+11) GOTCHA!  File naming conventions in Python vs Java!
+- http://stackoverflow.com/questions/16780510/python-module-object-is-not-callable-calling-method-in-another-file
+
+a) filename may DIFFER from internal classname in Python!  Within Using file; where Used filename is 'binheap' and class of interest is BinHeap:
+from Heaps.binheap import BinHeap
+BinHeap.method ...
+
+b) Where Heaps is package directory; containing:
+- binheap.py
+- __init__.py which is an EMPTY file!
+
+12) GOTCHA!  Equivalent of Java ctor is below:
+
+- function within Python class:
+def __init__(self):
+
+- invoked similar to Java ctor:
+bh = BinHeap()
+
+13) OPEN PROBLEM:  PyCharm NOT debug/stepping onto different Module!
+https://intellij-support.jetbrains.com/hc/en-us/community/posts/205819519-Cannot-step-into-imported-module-class-debugger-says-frame-not-available-
+
+14) BASIC OPERATORS:
+http://www.tutorialspoint.com/python/python_basic_operators.htm
+
+- operator '//' is division where digits after decimal points are removed
+
+15) MIN OPERATOR:
+https://docs.python.org/2/library/functions.html#min
+
+16) CONDITIONAL ASSIGNMENT OPERATOR:
+http://stackoverflow.com/questions/3091316/python-conditional-ternary-operator-for-assignments
+
+17) EQUALS
+
+- 'is' a shallow id() reference comparison
+- == a deeper value comparison; utilizing
+- override __cmp__ and one of __gt__ or __lt__ ops
+
+- http://stackoverflow.com/questions/2576826/pythons-preferred-comparison-operators
+- http://stackoverflow.com/questions/1227121/compare-object-instances-for-equality-by-their-attributes-in-python
+
+18) COPYING LISTS IN PYTHON
+http://stackoverflow.com/questions/2612802/how-to-clone-or-copy-a-list-in-python
+
+- use [:] slice operator for ALL,
+      [start:len]
+- otherwise copy.deepcopy()
+
+19) GETTING TYPE of VAR
+
+- print type(numToFind)
+
+20) FORMATTED PRINT OUTPUT
+
+- "ENTERING recurseBinarySearch with startIdx, endIdx, recursionLevel:  {0}, {1}, {2}".format(startIdx, endIdx, recursionLevel)
+
+21) VARIABLE ARGS
+
+- http://stackoverflow.com/questions/3394835/args-and-kwargs
+
+a) You would use *args when you're not sure how many arguments might be passed to your function, i.e. it allows you pass an arbitrary number of arguments to your function. For example:
+
+>>> def print_everything(*args):
+        for count, thing in enumerate(args):
+...         print '{0}. {1}'.format(count, thing)
+...
+>>> print_everything('apple', 'banana', 'cabbage')
+0. apple
+1. banana
+2. cabbage
+
+b) **kwargs allows you to handle named arguments that you have not defined in advance:
+
+>>> def table_things(**kwargs):
+...     for name, value in kwargs.items():
+...         print '{0} = {1}'.format(name, value)
+...
+>>> table_things(apple = 'fruit', cabbage = 'vegetable')
+cabbage = vegetable
+apple = fruit
+
+22) Raising Exceptions in Python
+- http://stackoverflow.com/questions/2052390/manually-raising-throwing-an-exception-in-python
+- http://stackoverflow.com/questions/10726919/what-error-to-raise-when-class-state-is-invalid
+- http://www.tutorialspoint.com/python/python_exceptions.htm
+- http://stackoverflow.com/questions/11247439/python-queue-empty-exception-handling
+
+raise ValueError('Illegal Argument Exception.  DataList must not be empty.')
+
+23) DUCK TYPING in Python, and documenting return types and inputs with docstrings!
+
+- http://stackoverflow.com/questions/4205130/what-is-duck-typing
+- http://stackoverflow.com/questions/5336320/python-how-to-know-function-return-type-and-argument-types
